@@ -2,8 +2,8 @@
     "autokill": true,
     "terminals": [
         {
-            "name": "build-watch",
-            "command": "npm run build-watch"
+            "name": "start",
+            "command": "npm start"
         },
         {
             "name": "prettier-watch",
