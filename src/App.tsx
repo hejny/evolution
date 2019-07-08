@@ -21,7 +21,7 @@ export class App {
         });
 
         for (let i = 0; i < 10; i++) {
-            this.appState.units.push(UnitDiceCube.createRandom());
+            this.world.units.push(UnitDiceCube.createRandom());
         }
 
         ReactDOM.render(
@@ -31,8 +31,9 @@ export class App {
 
         while (true) {
             this.world.randomBattle();
+            this.appState.units = this.world.units;
 
-            await forTime(1000);
+            await forTime(100000);
             await forAnimationFrame();
         }
     }
