@@ -10,7 +10,7 @@
     "deploy": "gh-pages -d build",
     "deploy-from-cache": "gh-pages -d build",
     "prettier": "prettier --config .prettierrc --write \"src/**/*.{ts,tsx,js}\" webpack.config.js",
-    "prettier-watch": "onchange \"src/**/*.{ts,jsx,js}\" -- prettier --config .prettierrc --write {{changed}}"
+    "prettier-watch": "onchange \"src/**/*.{ts,tsx,js}\" -- prettier --config .prettierrc --write {{changed}}"
   },
   "dependencies": {
     "@types/lodash": "^4.14.116",
@@ -22,7 +22,8 @@
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-scripts-ts": "2.17.0",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "waitminute": "0.0.3"
   },
   "devDependencies": {
     "@types/jest": "^23.3.1",

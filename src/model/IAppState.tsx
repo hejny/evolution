@@ -1,9 +1,5 @@
-import { IGeoJson } from '../tools/IGeoJson';
-import { ValuesRange } from 'src/tools/ValuesRange';
-import { ColorScheme } from 'src/tools/ColorScheme';
+import { IUnit } from './IUnit';
 
-export interface IAppState {
-    opened: IGeoJson[];
-    valuesRange: ValuesRange;
-    colorScheme: ColorScheme;
+export interface IAppState<TUnit> {
+    units: IUnit<TUnit>[];
 }

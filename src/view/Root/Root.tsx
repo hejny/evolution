@@ -1,20 +1,18 @@
 import './Root.css';
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { Map } from '../Map/Map';
 import { IAppState } from '../../model/IAppState';
 import { IObservableObject } from 'mobx';
-import { MapLegend } from '../MapLegend/MapLegend';
+import { Unit } from '../Unit/Unit';
 
 interface IAppProps {
-    appState: IAppState & IObservableObject;
+    appState: IAppState<any> & IObservableObject;
 }
 
-export const Root = observer(({ appState }: IAppProps) => {
-    return (
-        <div className="Root">
-            <Map width={500} {...{ appState }} />
-            <MapLegend {...{ appState }} />
-        </div>
-    );
-});
+export const Root = observer(({ appState }: IAppProps) => (
+    <div className="Root">
+        {appState.units.map((unit) => (
+            <Unit {...{ unit }} />
+        ))}
+    </div>
+));

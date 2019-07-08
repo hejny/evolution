@@ -3,50 +3,37 @@ import * as ReactDOM from 'react-dom';
 import { IAppState } from './model/IAppState';
 import { IObservableObject, observable } from 'mobx';
 import { Root } from './view/Root/Root';
-import { createDefaultAppState } from './model/createDefaultAppState';
-import { IGeoJson, IGeoJsonFeature } from './tools/IGeoJson';
-import { ValuesRange } from './tools/ValuesRange';
-import { getFeatureValue } from './tools/getFeatureValue';
+import { UnitDiceCube } from './model/UnitDiceCube';
+import { World } from './model/World';
+import { IUnit } from './model/IUnit';
+import { forAnimationFrame, forTime } from 'waitminute';
 
 export class App {
     constructor(private rootElement: HTMLDivElement) {}
 
-    public appState: IAppState & IObservableObject;
+    public world: World<UnitDiceCube>;
+    public appState: IAppState<UnitDiceCube> & IObservableObject;
+
     async run() {
-        this.appState = observable(createDefaultAppState());
+        this.world = new World<UnitDiceCube>();
+        this.appState = observable({
+            units: [] as IUnit<UnitDiceCube>[],
+        });
+
+        for (let i = 0; i < 10; i++) {
+            this.appState.units.push(UnitDiceCube.createRandom());
+        }
+
         ReactDOM.render(
             <Root {...{ appState: this.appState }} />,
             this.rootElement,
         );
 
-        //this.loadFile('/samples/CZcounties.geojson');
-        //this.loadFile('/samples/CZdistricts.geojson');
-        //setTimeout(()=>{
-        //    this.loadFile('/samples/DEbld.geojson');
-        //},2000);
-    }
+        while (true) {
+            this.world.randomBattle();
 
-    async loadGeoJson(geoJson: IGeoJson) {
-        this.recountRange(geoJson);
-        this.appState.opened.push(geoJson);
-    }
-
-    private recountRange(geoJsonNew: IGeoJson) {
-        const valuesRange = new ValuesRange();
-        for (const geoJson of [...this.appState.opened, geoJsonNew]) {
-            for (const feature of geoJson.features) {
-                //console.log('feature', feature);
-                valuesRange.pushValue(getFeatureValue(feature));
-            }
+            await forTime(1000);
+            await forAnimationFrame();
         }
-        //console.log(valuesRange);
-        this.appState.valuesRange = valuesRange;
     }
-
-    /*
-    async loadFile(url: string) {
-        const geoJson = (await (await fetch(url)).json()) as IGeoJson;
-        this.loadGeoJson(geoJson);
-    }
-    */
 }
