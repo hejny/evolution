@@ -1,6 +1,6 @@
-# GeoJSON SVG
+# Evolution simulator
 
-Show your GeoJSONs in SVG images.
+Simple evolution simulator
 
 ## Develop
 

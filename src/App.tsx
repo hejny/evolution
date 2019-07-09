@@ -6,7 +6,7 @@ import { Root } from './view/Root/Root';
 import { UnitDiceCube } from './model/UnitDiceCube';
 import { World } from './model/World';
 import { IUnit } from './model/IUnit';
-import { forAnimationFrame, forTime } from 'waitminute';
+import { forAnimationFrame, forTime } from 'waitasecond';
 
 export class App {
     constructor(private rootElement: HTMLDivElement) {}
@@ -50,7 +50,7 @@ export class App {
                 this.appState.unitStats[unit.uuid].age++;
             }
 
-            await forTime(1000000);
+            await forTime(1000000000);
             await forAnimationFrame();
         }
     }
