@@ -41,9 +41,12 @@ export class App {
             }
 
             for (const kind of Object.keys(yearKindsStats)) {
-                this.appState.kindsStats[kind] =
-                    this.appState.kindsStats[kind] || [];
-                this.appState.kindsStats[kind].push(yearKindsStats[kind]);
+                this.appState.kindsStats[kind] = this.appState.kindsStats[
+                    kind
+                ] || { start: year, unitCounts: [] };
+                this.appState.kindsStats[kind].unitCounts.push(
+                    yearKindsStats[kind],
+                );
             }
 
             const { died, born } = this.world.randomBattle();

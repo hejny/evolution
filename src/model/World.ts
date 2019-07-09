@@ -36,7 +36,7 @@ export class World<TUnit extends IUnit<TUnit>> {
         looser: TUnit,
     ): IWorldBattleResult<TUnit> {
         this.units = this.units.filter((unit) => unit !== looser);
-        const born = winner.clone();
+        const born = winner.createMutated();
         this.units.push(born);
         return { born: [born], died: [looser] };
     }

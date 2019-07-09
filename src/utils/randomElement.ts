@@ -1,6 +1,11 @@
-// TODO: Multiple choise
+export function randomIndex(elements: any[]): number {
+    return Math.floor(Math.random() * elements.length);
+}
+
 export function randomElement<T>(elements: T[]): T {
-    const i = Math.floor(Math.random() * elements.length);
-    console.log(elements, i);
+    const i = randomIndex(elements);
+    //console.log(elements, i);
     return elements[i];
 }
+
+// TODO: Multiple choise

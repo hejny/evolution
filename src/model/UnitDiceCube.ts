@@ -1,7 +1,7 @@
 import { IUnit, compareResult } from './IUnit';
 import { number } from 'prop-types';
 import { identity } from 'src/utils/identity';
-import { randomElement } from 'src/utils/randomElement';
+import { randomElement, randomIndex } from 'src/utils/randomElement';
 import * as uuid from 'uuid';
 
 type UnitDiceCubeConfig = [number, number, number, number, number, number];
@@ -30,7 +30,7 @@ export class UnitDiceCube implements IUnit<UnitDiceCube> {
     }
 
     get kind() {
-        return this.toString();
+        return `${this.config.sort().join('-')}`;
     }
 
     battle(unit2: UnitDiceCube): compareResult {
@@ -47,14 +47,26 @@ export class UnitDiceCube implements IUnit<UnitDiceCube> {
         ) as UnitDiceCubeConfig);
     }
 
+    createMutated() {
+        const config = this.config.map(identity) as UnitDiceCubeConfig;
+
+        const i1 = randomIndex(config);
+        const i2 = randomIndex(config);
+
+        config[i1]++;
+        config[i2]--;
+
+        return new UnitDiceCube(config);
+    }
+
     toString() {
         return `[${this.config.join(',')}]`;
     }
 
     static createRandom(): UnitDiceCube {
+        // TODO: Better
         return new UnitDiceCube([1, 2, 3, 4, 5, 6]);
     }
 
-    // TODO: createMutated(): DiceCube {}
     // TODO: create All
 }
