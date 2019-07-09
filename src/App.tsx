@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { IAppState } from './model/IAppState';
+import { IAppState, defaultUnitStats } from './model/IAppState';
 import { IObservableObject, observable } from 'mobx';
 import { Root } from './view/Root/Root';
 import { UnitDiceCube } from './model/UnitDiceCube';
@@ -18,10 +18,14 @@ export class App {
         this.world = new World<UnitDiceCube>();
         this.appState = observable({
             units: [] as IUnit<UnitDiceCube>[],
+            unitStats: {},
         });
 
+        // TODO: DRY
         for (let i = 0; i < 10; i++) {
-            this.world.units.push(UnitDiceCube.createRandom());
+            const unit = UnitDiceCube.createRandom();
+            this.world.units.push(unit);
+            this.appState.unitStats[unit.uuid] = defaultUnitStats(0);
         }
 
         ReactDOM.render(
@@ -29,11 +33,24 @@ export class App {
             this.rootElement,
         );
 
-        while (true) {
-            this.world.randomBattle();
+        for (let year = 0; year < 100; year++) {
+            const { died, born } = this.world.randomBattle();
+
+            for (const diedUnit of died) {
+                this.appState.unitStats[diedUnit.uuid].died = year;
+            }
+
+            for (const bornUnit of born) {
+                this.appState.unitStats[bornUnit.uuid] = defaultUnitStats(year);
+            }
+
             this.appState.units = this.world.units;
 
-            await forTime(100000);
+            for (const unit of this.appState.units) {
+                this.appState.unitStats[unit.uuid].age++;
+            }
+
+            await forTime(1000000);
             await forAnimationFrame();
         }
     }

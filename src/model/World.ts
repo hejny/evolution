@@ -1,5 +1,11 @@
+import { Unit } from './../view/Unit/Unit';
 import { IUnit } from './IUnit';
 import { randomElement } from 'src/utils/randomElement';
+
+interface IWorldBattleResult<TUnit extends IUnit<TUnit>> {
+    born: TUnit[];
+    died: TUnit[];
+}
 
 export class World<TUnit extends IUnit<TUnit>> {
     units: TUnit[] = [];
@@ -8,7 +14,7 @@ export class World<TUnit extends IUnit<TUnit>> {
         this.units.push(unit);
     }
 
-    randomBattle(): void {
+    randomBattle(): IWorldBattleResult<TUnit> {
         const unit1 = this.randomUnit();
         const unit2 = this.randomUnit();
 
@@ -17,15 +23,22 @@ export class World<TUnit extends IUnit<TUnit>> {
         const result = unit1.battle(unit2);
 
         if (result === 1) {
-            this.resultOfBattle(unit1, unit2);
+            return this.resultOfBattle(unit1, unit2);
         } else if (result === -1) {
-            this.resultOfBattle(unit2, unit1);
+            return this.resultOfBattle(unit2, unit1);
         }
+
+        return { died: [], born: [] };
     }
 
-    private resultOfBattle(winner: TUnit, looser: TUnit) {
+    private resultOfBattle(
+        winner: TUnit,
+        looser: TUnit,
+    ): IWorldBattleResult<TUnit> {
         this.units = this.units.filter((unit) => unit !== looser);
-        this.units.push(winner.clone());
+        const born = winner.clone();
+        this.units.push(born);
+        return { born: [born], died: [looser] };
     }
 
     private randomUnit(): TUnit {
