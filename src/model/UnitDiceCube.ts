@@ -29,6 +29,10 @@ export class UnitDiceCube implements IUnit<UnitDiceCube> {
         }
     }
 
+    get kind() {
+        return this.toString();
+    }
+
     battle(unit2: UnitDiceCube): compareResult {
         return UnitDiceCube.battle(this, unit2);
     }
