@@ -2,6 +2,7 @@ import { IUnit, compareResult } from './IUnit';
 import { number } from 'prop-types';
 import { identity } from 'src/utils/identity';
 import { randomElement } from 'src/utils/randomElement';
+import * as uuid from 'uuid';
 
 type UnitDiceCubeConfig = [number, number, number, number, number, number];
 
@@ -17,6 +18,8 @@ export class UnitDiceCube implements IUnit<UnitDiceCube> {
             return 0;
         }
     }
+
+    public uuid = uuid.v4();
 
     constructor(public config: UnitDiceCubeConfig) {
         if (config.reduce((a, b) => a + b, 0) !== 21) {

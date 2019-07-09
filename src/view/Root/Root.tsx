@@ -12,7 +12,7 @@ interface IAppProps {
 export const Root = observer(({ appState }: IAppProps) => (
     <div className="Root">
         {appState.units.map((unit) => (
-            <Unit {...{ unit }} />
+            <Unit {...{ key: unit.uuid, unit }} />
         ))}
     </div>
 ));
